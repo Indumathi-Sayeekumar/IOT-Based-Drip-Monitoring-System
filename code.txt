@@ -50,5 +50,4 @@ void updateSerial()
   mySerial.println("ATH"); //hang up
   updateSerial();
 }
-  }
-}	  
+  }  
