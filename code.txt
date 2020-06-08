@@ -1,0 +1,54 @@
+#include "HX711.h"
+
+// HX711.DOUT	- pin #A1
+// HX711.PD_SCK	- pin #A0
+
+HX711 scale(A1, A0);		// parameter "gain" is ommited; the default value 128 is used by the library
+int led = 13;// led ah 13 la connect pannanu
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial(3, 2); //SIM800L Tx & Rx is connected to Arduino #3 & #2
+
+
+void setup() {
+  Serial.begin(38400);
+  scale.set_scale(2280.f);                    
+  scale.tare();				        
+  Serial.print("read: \t\t");
+  Serial.println(scale.read());
+  pinMode(led, OUTPUT);
+}
+void updateSerial()
+{
+  delay(500);
+  while (Serial.available()) 
+  {
+    mySerial.write(Serial.read());//Forward what Serial received to Software Serial Port
+  }
+  while(mySerial.available()) 
+  {
+    Serial.write(mySerial.read());//Forward what Software Serial received to Serial Port
+  }
+}
+  void loop() {
+  if(scale.read()<500)
+  {
+  digitalWrite (led, HIGH);
+  }
+  if(scale.read()>1000)
+  {
+    {
+  Serial.begin(9600);
+  mySerial.begin(9600);
+  delay(1000);
+
+  mySerial.println("AT"); //Once the handshake test is successful, i t will back to OK
+  updateSerial();
+  
+  mySerial.println("ATD+ +916381927244;"); //   phone number to dial
+  updateSerial();
+  delay(20000); // wait for 20 second
+  mySerial.println("ATH"); //hang up
+  updateSerial();
+}
+  }
+}	  
