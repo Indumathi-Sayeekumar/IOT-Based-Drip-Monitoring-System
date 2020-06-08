@@ -4,7 +4,7 @@
 // HX711.PD_SCK	- pin #A0
 
 HX711 scale(A1, A0);		// parameter "gain" is ommited; the default value 128 is used by the library
-int led = 13;// led ah 13 la connect pannanu
+int led = 13;//connect pin 13 to LED 
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(3, 2); //SIM800L Tx & Rx is connected to Arduino #3 & #2
 
@@ -41,7 +41,7 @@ void updateSerial()
   mySerial.begin(9600);
   delay(1000);
 
-  mySerial.println("AT"); //Once the handshake test is successful, i t will back to OK
+  mySerial.println("AT"); 
   updateSerial();
   
   mySerial.println("ATD+ +916381927244;"); //   phone number to dial
